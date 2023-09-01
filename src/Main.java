@@ -33,6 +33,7 @@ public class Main {
                 break;
             case "edge":
                 driver = new EdgeDriver();
+                break;
             default:
                 driver = new ChromeDriver();
                 break;
