@@ -1,7 +1,5 @@
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -13,6 +11,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Set;
@@ -85,9 +85,10 @@ public class Main {
     // @assigned=Selen Dilek
     //Access to courses from the lower menu
     @Test
-    void US4FooterCoursesMenu() throws InterruptedException {
+    void US4FooterCoursesMenu() throws InterruptedException, IOException {
         //BUG 1 : Kurslarin adi var ama kisa adi yoktur. Sadece Yazilim Test Muhendisligi icin kisa ad var "SDET"
 
+        TakesScreenshot ts = (TakesScreenshot) driver;
         WebElement courses =driver.findElement(By.xpath("//a[@data-tooltip-menu-id='516093139']"));
         Assert.assertTrue(courses.isDisplayed());
         new Actions(driver).moveToElement(courses).build().perform();
@@ -95,8 +96,6 @@ public class Main {
         List<WebElement> listofCourses=driver.findElements(By.xpath("//div[@class='t966__menu-item-title t-name']"));
         for(WebElement e : listofCourses){
             System.out.println("e.getText() = " + e.getText());
-
-
             wait.until(ExpectedConditions.visibilityOf(e));
             Assert.assertTrue(e.isDisplayed());
 
@@ -105,29 +104,26 @@ public class Main {
         for(WebElement e : listofCourses){
 
             Assert.assertTrue(e.isEnabled());
-
         }
 
         for(WebElement e : listofCourses){
 
            e.click();
            Thread.sleep(1000);
-           ////a[@class='tn-atom']
             WebElement detayliBilgi =
                     wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//div[@class='tn-atom'])[1]")));
 
-            Assert.assertTrue(detayliBilgi.isEnabled()); //Not Veri Bilimi Bootcamp indeki detaylibilgi butonu tiklanmiyor.(BUG2)
+            //(BUG2) : Not Veri Bilimi Bootcamp indeki detaylibilgi butonu tiklanmiyor.
+            Assert.assertTrue(detayliBilgi.isEnabled());
             detayliBilgi.click();
+            File hh = ts.getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(hh, new File("screenshots\\screenshot.png"));
+
+
 
             //BUG(3)
             //Yazilim Test muhendisligi icin detayli bilgiye tiklayinca farkli bir alana yonlendiriyor digerlerinden farkli bir alana
-
-
-
-
         }
-
-        driver.navigate().refresh();
 
         WebElement courses2 =driver.findElement(By.cssSelector("[class='t-menu__link-item t966__tm-link']"));
         List<WebElement> listofCourses2=driver.findElements(By.cssSelector("[class='t966__menu-item-title t-name']"));
@@ -143,16 +139,42 @@ public class Main {
             System.out.println("title = " + title);
 
             Assert.assertTrue(element.getText().equalsIgnoreCase(title));
+            File hh = ts.getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(hh, new File("screenshots\\screenshot.png"));
             //Not : yazilim test muhendisinin kisa adi SDET olarak yazilmis digerlerinde kisa adi yok. O yuzden hata aliyorum
             //element.getText()=Yazılım Test Mühendisi
-            //title=SDET Yazılım Test Mühendisi (BUG4)
+            //title=SDET Yazılım Test Mühendisi
 
-            //BUG5  () : Master's Degree tiklayinca beni turkce sayfadan ingilizce sayfaya yonlendiriyor .
 
+
+            //BUG4  () : Master's Degree tiklayinca beni turkce sayfadan ingilizce sayfaya yonlendiriyor .
+            WebElement courses3 =driver.findElement(By.cssSelector("[class='t-menu__link-item t966__tm-link']"));
+            new Actions(driver).moveToElement(courses3).build().perform();
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//div[@class='t966__menu-item-title t-name'])[5]")));
+            WebElement mastersProgram=driver.findElement(By.xpath("(//div[@class='t966__menu-item-title t-name'])[5]"));
+            mastersProgram.click();
+            Assert.assertTrue(driver.getTitle().equalsIgnoreCase("Master's Program"));
+
+            File hafizaHali = ts.getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(hafizaHali, new File("screenshots\\screenshot.png"));
             driver.navigate().back();
 
-            //BUG6 : Kurslar bolumune mouseover yaptigim zaman JobCenter & Arbeissamt kursuna tikladigimda sayfanin basliginda
-            //kursun adi gozukmuyor ve sol ust kosede yer alan kurslar bolumu gozukmuyor.
+
+
+            //BUG5 : Kurslar bolumune mouseover yaptigim zaman JobCenter & Arbeissamt kursuna tikladigimda sayfanin basliginda
+            //kursun adi gozukmuyor ve sol ust kosede yer alan kurslar bolumu gozukmuyor. sayfanin ust kismi bos.
+            WebElement courses4 =driver.findElement(By.cssSelector("[class='t-menu__link-item t966__tm-link']"));
+            new Actions(driver).moveToElement(courses4).build().perform();
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//div[@class='t966__menu-item-title t-name'])[4]")));
+            WebElement jobCenterArbeissamt=driver.findElement(By.xpath("(//div[@class='t966__menu-item-title t-name'])[4]"));
+            jobCenterArbeissamt.click();
+            Assert.assertTrue(courses4.isDisplayed());
+
+            File hafizaHali2 = ts.getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(hafizaHali2, new File("screenshots\\screenshot.png"));
+            driver.navigate().back();
+
+
 
 
         }
