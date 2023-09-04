@@ -25,6 +25,7 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Date;
@@ -90,15 +91,14 @@ public class Main {
 
     // @assigned=Rustam Rozbayev
     @Test
-    void US3ApplyToCourse () {
-
+    void US3ApplyToCourse()
+    {
         WebElement basvur = driver.findElement(By.xpath("//a[@class='tn-atom js-click-zero-stat']"));
         basvur.click();
 
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='t-input-block']/input[contains(@aria-label, 'name')]")));
         WebElement firstName = driver.findElement(By.xpath("//div[@class='t-input-block']/input[contains(@aria-label, 'name')]"));
         firstName.sendKeys("Test_ali Cebbar ");
-
 
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='t-input-block']/input[contains(@aria-label, 'email')]")));
         WebElement email = driver.findElement(By.xpath("//div[@class='t-input-block']/input[contains(@aria-label, 'email')]"));
@@ -112,7 +112,6 @@ public class Main {
         optionsList1.click();
         WebElement phoneNumber = driver.findElement(By.xpath("//input[@class='t-input t-input-phonemask']"));
         phoneNumber.sendKeys("652-301");
-
 
         WebElement country = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='sb-1667664755026']")));
         new Select(country).selectByVisibleText("Andorra");
@@ -133,14 +132,8 @@ public class Main {
         submitButton.click();
 
         WebElement mesaj = driver.findElement(By.xpath("//span[text()='Lütfen posta kutunuzu kontrol ediniz.']"));
-      //  String msj = String.valueOf(mesaj.getText().equalsIgnoreCase("Lütfen posta kutunuzu kontrol ediniz."));
-       // String Mesaj = "Lütfen posta kutunuzu kontrol ediniz.";
 
         Assert.assertFalse("Mesaj Gonderildi".isEmpty(), mesaj.getText());
-
-
-
-
     }
 
     // @assigned=Selen Dilek
