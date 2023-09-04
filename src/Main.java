@@ -13,6 +13,8 @@ import org.testng.annotations.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
 import java.util.Set;
@@ -103,8 +105,9 @@ public class Main {
         }
 
         for (WebElement e : listofCourses) {
+            Thread.sleep(2000);
             e.click();
-            Thread.sleep(1000);
+            Thread.sleep(2000);
 
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//div[@class='tn-atom'])[1]")));
             WebElement detayliBilgi = driver.findElement(By.xpath("(//div[@class='tn-atom'])[1]"));
@@ -112,8 +115,8 @@ public class Main {
             //(BUG2) : Not Veri Bilimi Bootcamp indeki detaylibilgi butonu tiklanmiyor.
             Assert.assertTrue(detayliBilgi.isEnabled());
             detayliBilgi.click();
-            File hh = ts.getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(hh, new File("screenshots\\screenshot.png"));
+
+            SaveScreenshot(ts.getScreenshotAs(OutputType.FILE), "US4_Bug01");
 
             //BUG(3)
             //Yazilim Test muhendisligi icin detayli bilgiye tiklayinca farkli bir alana yonlendiriyor digerlerinden farkli bir alana
@@ -132,8 +135,9 @@ public class Main {
             System.out.println("title = " + title);
 
             Assert.assertTrue(element.getText().equalsIgnoreCase(title));
-            File hh = ts.getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(hh, new File("screenshots\\screenshot.png"));
+
+            SaveScreenshot(ts.getScreenshotAs(OutputType.FILE), "US4_Bug02");
+
             //Not : yazilim test muhendisinin kisa adi SDET olarak yazilmis digerlerinde kisa adi yok. O yuzden hata aliyorum
             //element.getText()=Yazılım Test Mühendisi
             //title=SDET Yazılım Test Mühendisi
@@ -148,8 +152,8 @@ public class Main {
 
             Assert.assertTrue(driver.getTitle().equalsIgnoreCase("Master's Program"));
 
-            File hafizaHali = ts.getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(hafizaHali, new File("screenshots\\screenshot.png"));
+            SaveScreenshot(ts.getScreenshotAs(OutputType.FILE), "US4_Bug03");
+
             driver.navigate().back();
 
             //BUG5 : Kurslar bolumune mouseover yaptigim zaman JobCenter & Arbeissamt kursuna tikladigimda sayfanin basliginda
@@ -162,8 +166,7 @@ public class Main {
             jobCenterArbeissamt.click();
             Assert.assertTrue(courses4.isDisplayed());
 
-            File hafizaHali2 = ts.getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(hafizaHali2, new File("screenshots\\screenshot.png"));
+            SaveScreenshot(ts.getScreenshotAs(OutputType.FILE), "US4_Bug04");
             driver.navigate().back();
         }
     }
@@ -195,9 +198,17 @@ public class Main {
 
     // @assigned=Emrullah Tanima
     @AfterMethod
-    void US6CheckLogoRedirect()
-    {
+    void US6CheckLogoRedirect() throws IOException {
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div/div/a[@href='/home']")));
+        WebElement logo = driver.findElement(By.xpath("//div/div/a[@href='/home']"));
+        logo.click();
 
+        if (driver.getCurrentUrl().equals(baseUrl)) {
+            TakesScreenshot ss = (TakesScreenshot) driver;
+            SaveScreenshot(ss.getScreenshotAs(OutputType.FILE), "US6_Bug01");
+
+            //Assert.assertEquals(driver.getCurrentUrl(), baseUrl);
+        }
     }
 
     // @assigned=Ümit Boyraz
@@ -212,6 +223,23 @@ public class Main {
     void US8AcceptTermsOfUse()
     {
 
+    }
+
+    /**
+     * TakeScreenshot
+     *
+     * @param source
+     * @param prefix
+     * @throws IOException
+     */
+    public static void SaveScreenshot(File source, String prefix) throws IOException
+    {
+        String fileName = prefix + "_" + System.currentTimeMillis() + ".png";
+
+        Path currentRelativePath = Paths.get("");
+        String target = currentRelativePath.toAbsolutePath().toString();
+
+        FileUtils.copyFile(source, new File(target + "/src/screenshots/" + fileName));
     }
 
     @AfterClass
