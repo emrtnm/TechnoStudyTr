@@ -6,18 +6,10 @@
 
         <classes>
             <class name="Main">
-            <methods>
-
-                <include name="US5AccessSocialsMedia">
-
-
-                </include>
-
-            </methods>
-
-
+                <methods>
+                    <include name="US5AccessSocialsMedia"/>
+                </methods>
             </class>
-
         </classes>
     </test>
 </suite>
