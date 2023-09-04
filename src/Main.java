@@ -26,6 +26,8 @@ public class Main {
     public WebDriverWait wait;
     public String baseUrl = "https://techno.study/tr/";
 
+    public TakesScreenshot ts;
+
     @BeforeClass
     @Parameters("webDriver")
     public void init(String webDriver) {
@@ -55,6 +57,7 @@ public class Main {
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
         wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        ts = (TakesScreenshot) driver;
     }
 
     @BeforeMethod
@@ -87,13 +90,12 @@ public class Main {
     // @assigned=Selen Dilek
     @Test
     void US4FooterCoursesMenu() throws InterruptedException, IOException {
-        TakesScreenshot ts = (TakesScreenshot) driver;
         WebElement courses = driver.findElement(By.xpath("//a[@data-tooltip-menu-id='516093139']"));
         Assert.assertTrue(courses.isDisplayed());
 
         new Actions(driver).moveToElement(courses).build().perform();
 
-        List<WebElement> listofCourses=driver.findElements(By.xpath("//div[@class='t966__menu-item-title t-name']"));
+        List<WebElement> listofCourses = driver.findElements(By.xpath("//a[@class='t966__menu-link']"));
 
         for(WebElement e : listofCourses){
             wait.until(ExpectedConditions.visibilityOf(e));
@@ -105,9 +107,8 @@ public class Main {
         }
 
         for (WebElement e : listofCourses) {
-            Thread.sleep(2000);
+            wait.until(ExpectedConditions.elementToBeClickable(e));
             e.click();
-            Thread.sleep(2000);
 
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//div[@class='tn-atom'])[1]")));
             WebElement detayliBilgi = driver.findElement(By.xpath("(//div[@class='tn-atom'])[1]"));
@@ -204,8 +205,7 @@ public class Main {
         logo.click();
 
         if (driver.getCurrentUrl().equals(baseUrl)) {
-            TakesScreenshot ss = (TakesScreenshot) driver;
-            SaveScreenshot(ss.getScreenshotAs(OutputType.FILE), "US6_Bug01");
+            SaveScreenshot(ts.getScreenshotAs(OutputType.FILE), "US6_Bug01");
 
             //Assert.assertEquals(driver.getCurrentUrl(), baseUrl);
         }

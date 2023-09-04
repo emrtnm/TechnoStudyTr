@@ -8,7 +8,6 @@
             <class name="Main">
                 <methods>
                     <include name="US4FooterCoursesMenu"/>
-                    <include name="US6CheckLogoRedirect"/>
                 </methods>
             </class>
         </classes>
