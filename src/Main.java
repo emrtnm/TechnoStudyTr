@@ -109,6 +109,9 @@ public class Main {
         }
 
         for (WebElement e : listofCourses) {
+            new Actions(driver).moveToElement(courses).build().perform();
+            Thread.sleep(1000);
+
             wait.until(ExpectedConditions.elementToBeClickable(e));
             e.click();
 
@@ -121,8 +124,7 @@ public class Main {
 
             SaveScreenshot(ts.getScreenshotAs(OutputType.FILE), "US4_Bug01");
 
-            //BUG(3)
-            //Yazilim Test muhendisligi icin detayli bilgiye tiklayinca farkli bir alana yonlendiriyor digerlerinden farkli bir alana
+            driver.navigate().back();
         }
 
         WebElement courses2 = driver.findElement(By.cssSelector("[class='t-menu__link-item t966__tm-link']"));
