@@ -65,7 +65,7 @@ public class Main {
     @BeforeMethod
     void openUri()
     {
-        driver.get(baseUrl);
+        driver.navigate().to(baseUrl);
     }
 
     // @assigned=Samet Çamoğlu
