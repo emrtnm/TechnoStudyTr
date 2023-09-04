@@ -1,4 +1,3 @@
-import com.sun.xml.internal.ws.api.message.MessageWritable;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -11,13 +10,11 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.safari.SafariDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -264,8 +261,34 @@ public class Main {
 
     // @assigned=Ümit Boyraz
     @Test
-    void US7CourseDetails()
-    {
+    void US7CourseDetails() throws InterruptedException {
+        Assert.assertTrue(driver.getCurrentUrl().equals(baseUrl));
+
+        WebElement mainLogo = driver.findElement(By.xpath("//img[@class='t228__imglogo ']"));
+        Assert.assertTrue(mainLogo.getAttribute("class").equals("t228__imglogo "),"Logo is not seen");
+
+        WebElement scrollToSdet = driver.findElement(By.xpath("//div[@field='tn_text_1490289646296']"));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView(true);", scrollToSdet);
+
+        WebElement sdet =wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[text()='SDET']")));
+        WebElement android =wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(text(),'Android Uygulama geli')]")));
+        WebElement veri =wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[text()='Veri Bilimi']")));
+
+        Assert.assertTrue(sdet.isDisplayed(),"'SDET' section is not displayed");
+        Assert.assertTrue(android.isDisplayed(),"'Android Uygulama Geliştiricisi' section is not displayed");
+        Assert.assertTrue(veri.isDisplayed(),"'Veri Bilimi' section is not displayed");
+
+        List<WebElement> detayliBilgiButtons = driver.findElements(By.linkText("Detaylı bilgi"));
+        for (WebElement dBb : detayliBilgiButtons){
+            js.executeScript("arguments[0].click();",dBb);
+            WebElement logo = driver.findElement(By.xpath("//img[@class='t228__imglogo ']"));
+            Assert.assertTrue(logo.getAttribute("class").equals("t228__imglogo "),"Logo is not seen");
+            Thread.sleep(1000);
+
+            Assert.assertEquals(driver.getCurrentUrl(),dBb.getAttribute("href"));
+            driver.navigate().back();
+        }
 
     }
 
