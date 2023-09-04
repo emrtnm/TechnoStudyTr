@@ -15,11 +15,13 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Date;
 
 public class Main {
     public WebDriver driver;
@@ -234,7 +236,9 @@ public class Main {
      */
     public static void SaveScreenshot(File source, String prefix) throws IOException
     {
-        String fileName = prefix + "_" + System.currentTimeMillis() + ".png";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+        String timeStamp = dateFormat.format(new Date());
+        String fileName = prefix + "_" + timeStamp + ".png";
 
         Path currentRelativePath = Paths.get("");
         String target = currentRelativePath.toAbsolutePath().toString();
