@@ -74,9 +74,30 @@ public class Main {
 
     // @assigned=Samet Çamoğlu
     @Test
-    void US1CoursesMenu()
-    {
+    void US1CoursesMenu() throws InterruptedException, IOException {
+        WebElement courses = driver.findElement(By.xpath("//a[@data-tooltip-menu-id='516093139']"));
+        Assert.assertTrue(courses.isDisplayed());
 
+        new Actions(driver).moveToElement(courses).build().perform();
+
+        List<WebElement> listofCourses = driver.findElements(By.xpath("//a[@class='t966__menu-link']"));
+
+        for (WebElement e : listofCourses) {
+            new Actions(driver).moveToElement(courses).build().perform();
+            Thread.sleep(1000);
+
+            wait.until(ExpectedConditions.elementToBeClickable(e));
+            e.click();
+
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//div[@class='tn-atom'])[1]")));
+            WebElement detayliBilgi = driver.findElement(By.xpath("(//div[@class='tn-atom'])[1]"));
+
+            Assert.assertTrue(detayliBilgi.isEnabled());
+            detayliBilgi.click();
+
+            SaveScreenshot(ts.getScreenshotAs(OutputType.FILE), "US1_Bug01");
+            driver.navigate().back();
+        }
     }
 
     // @assigned=Samet Çamoğlu
