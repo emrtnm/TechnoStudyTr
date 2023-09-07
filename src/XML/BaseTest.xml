@@ -7,7 +7,7 @@
         <classes>
             <class name="Main">
                 <methods>
-                    <include name="US3ApplyToCourse"/>
+                    <include name="US1CoursesMenu"/>
                 </methods>
             </class>
         </classes>

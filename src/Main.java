@@ -36,7 +36,8 @@ public class Main {
 
     @BeforeClass
     @Parameters("webDriver")
-    public void init(String webDriver) {
+    public void init(String webDriver)
+    {
         Logger logger = Logger.getLogger("");
         logger.setLevel(Level.SEVERE);
 
@@ -74,14 +75,14 @@ public class Main {
 
     // @assigned=Samet Çamoğlu
     @Test
-    void US1CoursesMenu() throws InterruptedException, IOException {
+    void US1CoursesMenu() throws InterruptedException, IOException
+    {
         WebElement courses = driver.findElement(By.xpath("//a[@data-tooltip-menu-id='516093139']"));
         Assert.assertTrue(courses.isDisplayed());
 
         new Actions(driver).moveToElement(courses).build().perform();
 
         List<WebElement> listofCourses = driver.findElements(By.xpath("//a[@class='t966__menu-link']"));
-
         for (WebElement e : listofCourses) {
             new Actions(driver).moveToElement(courses).build().perform();
             Thread.sleep(1000);
@@ -116,11 +117,11 @@ public class Main {
 
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='t-input-block']/input[contains(@aria-label, 'name')]")));
         WebElement firstName = driver.findElement(By.xpath("//div[@class='t-input-block']/input[contains(@aria-label, 'name')]"));
-        firstName.sendKeys("Test_ali Cebbar ");
+        firstName.sendKeys("TEST Ali Cebbar ");
 
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='t-input-block']/input[contains(@aria-label, 'email')]")));
         WebElement email = driver.findElement(By.xpath("//div[@class='t-input-block']/input[contains(@aria-label, 'email')]"));
-        email.sendKeys("test_alicebbar@gmail.com ");
+        email.sendKeys("test_alicebbar@gmail.com");
 
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("window.scrollBy(0,350)", "");
@@ -129,7 +130,7 @@ public class Main {
         WebElement optionsList1 = driver.findElement(By.xpath("//*[@id='t-phonemask_ad']"));
         optionsList1.click();
         WebElement phoneNumber = driver.findElement(By.xpath("//input[@class='t-input t-input-phonemask']"));
-        phoneNumber.sendKeys("652-301");
+        phoneNumber.sendKeys("9999999999");
 
         WebElement country = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='sb-1667664755026']")));
         new Select(country).selectByVisibleText("Andorra");
@@ -156,7 +157,8 @@ public class Main {
 
     // @assigned=Selen Dilek
     @Test
-    void US4FooterCoursesMenu() throws InterruptedException, IOException {
+    void US4FooterCoursesMenu() throws InterruptedException, IOException
+    {
         WebElement courses = driver.findElement(By.xpath("//a[@data-tooltip-menu-id='516093139']"));
         Assert.assertTrue(courses.isDisplayed());
 
@@ -208,11 +210,6 @@ public class Main {
 
             SaveScreenshot(ts.getScreenshotAs(OutputType.FILE), "US4_Bug02");
 
-            //Not : yazilim test muhendisinin kisa adi SDET olarak yazilmis digerlerinde kisa adi yok. O yuzden hata aliyorum
-            //element.getText()=Yazılım Test Mühendisi
-            //title=SDET Yazılım Test Mühendisi
-
-            //BUG4  () : Master's Degree tiklayinca beni turkce sayfadan ingilizce sayfaya yonlendiriyor .
             WebElement courses3 =driver.findElement(By.cssSelector("[class='t-menu__link-item t966__tm-link']"));
             new Actions(driver).moveToElement(courses3).build().perform();
 
@@ -226,8 +223,6 @@ public class Main {
 
             driver.navigate().back();
 
-            //BUG5 : Kurslar bolumune mouseover yaptigim zaman JobCenter & Arbeissamt kursuna tikladigimda sayfanin basliginda
-            //kursun adi gozukmuyor ve sol ust kosede yer alan kurslar bolumu gozukmuyor. sayfanin ust kismi bos.
             WebElement courses4 =driver.findElement(By.cssSelector("[class='t-menu__link-item t966__tm-link']"));
             new Actions(driver).moveToElement(courses4).build().perform();
 
@@ -245,16 +240,12 @@ public class Main {
     @Test
     void US5AccessSocialsMedia()
     {
-        // *Unused
-        String homePage = driver.getWindowHandle();
-
         JavascriptExecutor js = (JavascriptExecutor) driver;
         List<WebElement> linkler = driver.findElements(By.xpath("//a[@rel='nofollow noopener']"));
         for (WebElement link : linkler) {
-            Assert.assertTrue(link.isDisplayed()); //linkler goruluyor mu
-            Assert.assertTrue(link.isEnabled()); //linkler tiklanabiliyor mu
+            Assert.assertTrue(link.isDisplayed());
+            Assert.assertTrue(link.isEnabled());
 
-            //linklere tiklayinca sayfala aciliyor mu
             js.executeScript("arguments[0].scrollIntoView(true);", link);
             js.executeScript("arguments[0].click();", link);
 
@@ -310,7 +301,6 @@ public class Main {
             Assert.assertEquals(driver.getCurrentUrl(),dBb.getAttribute("href"));
             driver.navigate().back();
         }
-
     }
 
     // @assigned=Umut Can Güzel
