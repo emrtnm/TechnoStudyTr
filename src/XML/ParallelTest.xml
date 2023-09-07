@@ -2,18 +2,42 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="mySuit" parallel="tests" thread-count="3">
     <test name="chromeDriver">
-        <parameter name="webDriver" value="chrome"></parameter>
+        <parameter name="webDriver" value="chrome"/>
 
         <classes>
-            <class name="Main"> </class>
+            <class name="Main"/>
         </classes>
     </test>
 
     <test name="firefoxDriver">
-        <parameter name="webDriver" value="firefox"></parameter>
+        <parameter name="webDriver" value="firefox"/>
 
         <classes>
-            <class name="Main"> </class>
+            <class name="Main"/>
+        </classes>
+    </test>
+
+    <test name="safariDriver">
+        <parameter name="webDriver" value="safari"/>
+
+        <classes>
+            <class name="Main"/>
+        </classes>
+    </test>
+
+    <test name="edgeDriver">
+        <parameter name="webDriver" value="edge"/>
+
+        <classes>
+            <class name="Main"/>
+        </classes>
+    </test>
+
+    <test name="ieDriver">
+        <parameter name="webDriver" value="ie"/>
+
+        <classes>
+            <class name="Main"/>
         </classes>
     </test>
 </suite>

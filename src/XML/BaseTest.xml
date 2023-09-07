@@ -5,11 +5,7 @@
         <parameter name="webDriver" value="chrome"></parameter>
 
         <classes>
-            <class name="Main">
-                <methods>
-                    <include name="US1CoursesMenu"/>
-                </methods>
-            </class>
+            <class name="Main"/>
         </classes>
     </test>
 </suite>
