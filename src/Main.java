@@ -77,7 +77,7 @@ public class Main {
     @Test
     void US1CoursesMenu() throws InterruptedException, IOException
     {
-        WebElement courses = driver.findElement(By.xpath("//a[@data-tooltip-menu-id='516093139']"));
+        WebElement courses = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@data-tooltip-menu-id='516093139']")));
         Assert.assertTrue(courses.isDisplayed());
 
         new Actions(driver).moveToElement(courses).build().perform();
@@ -119,18 +119,18 @@ public class Main {
 
     // @assigned=Rustam Rozbayev
     @Test
-    void US3ApplyToCourse()
-    {
+    void US3ApplyToCourse() throws InterruptedException {
         WebElement apply = driver.findElement(By.xpath("//a[@class='tn-atom js-click-zero-stat']"));
         apply.click();
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='t-input-block']/input[contains(@aria-label, 'name')]")));
-        WebElement firstName = driver.findElement(By.xpath("//div[@class='t-input-block']/input[contains(@aria-label, 'name')]"));
-        firstName.sendKeys("TEST Grup 5");
+        Thread.sleep(1000);
+        //wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='t-input-block']/input[contains(@aria-label, 'name')]")));
+        WebElement firstName = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='t-input-block']/input[contains(@aria-label, 'name')]")));
+        firstName.sendKeys("Test Ali");
 
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='t-input-block']/input[contains(@aria-label, 'email')]")));
         WebElement email = driver.findElement(By.xpath("//div[@class='t-input-block']/input[contains(@aria-label, 'email')]"));
-        email.sendKeys("grup5@gmail.com");
+        email.sendKeys("testgrup5@gmail.com");
 
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("window.scrollBy(0,350)", "");
@@ -147,7 +147,7 @@ public class Main {
         new Select(country).selectByVisibleText("Andorra");
 
         WebElement course = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='sb-1663337581601']")));
-        new Select(course).selectByVisibleText("SDET Türkçe");
+        new Select(course).selectByIndex(1);
 
         WebElement howLearn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='sb-1670423010572']")));
         new Select(howLearn).selectByVisibleText("Youtube");
@@ -161,9 +161,9 @@ public class Main {
         WebElement submitButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='t-submit']")));
         submitButton.click();
 
-        WebElement msg = driver.findElement(By.xpath("//span[text()='Lütfen posta kutunuzu kontrol ediniz.']"));
+        WebElement msg = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='tildaformsuccesspopuptext']//p[2]/span")));
 
-        Assert.assertFalse("Message has not been sended".isEmpty(), msg.getText());
+        Assert.assertTrue(msg.getText().toLowerCase().contains("posta kutunuzu kontrol ediniz."),"Başvuru e-maili gönderilmedi!");
     }
 
     // @assigned=Selen Dilek
@@ -178,6 +178,7 @@ public class Main {
         List<WebElement> listOfCourses = driver.findElements(By.xpath("//a[@class='t966__menu-link']"));
 
         for(WebElement e : listOfCourses){
+            Thread.sleep(1000);
             wait.until(ExpectedConditions.visibilityOf(e));
             Assert.assertTrue(e.isDisplayed());
         }
@@ -205,8 +206,8 @@ public class Main {
 
             driver.navigate().back();
         }
-
-        WebElement courses2 = driver.findElement(By.cssSelector("[class='t-menu__link-item t966__tm-link']"));
+        Thread.sleep(1000);
+        WebElement courses2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class='t-menu__link-item t966__tm-link']")));
         List<WebElement> listOfCourses2=driver.findElements(By.cssSelector("[class='t966__menu-item-title t-name']"));
 
         for (WebElement course : listOfCourses2) {
@@ -227,7 +228,7 @@ public class Main {
             WebElement mastersProgram=driver.findElement(By.xpath("(//div[@class='t966__menu-item-title t-name'])[5]"));
             mastersProgram.click();
 
-            Assert.assertTrue(driver.getTitle().toLowerCase().contains("master's program"));
+            Assert.assertTrue(driver.getTitle().toLowerCase().contains("master's degree"));
 
             SaveScreenshot(ts.getScreenshotAs(OutputType.FILE), "US4_Bug03");
 
@@ -317,9 +318,9 @@ public class Main {
     // @assigned=Umut Can Güzel
     @Test
     void US8AcceptTermsOfUse() throws IOException, InterruptedException {
+        Thread.sleep(1000);
         new Actions(driver).scrollByAmount(0,6240).build().perform();
-
-        WebElement conditions = driver.findElement(By.xpath("//*[text()='Şartları']"));
+        WebElement conditions = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[text()='Şartları']")));
         conditions.click();
 
         Assert.assertFalse(driver.getCurrentUrl().contains("terms"),"kullanım şartları sayfasındasınız");
